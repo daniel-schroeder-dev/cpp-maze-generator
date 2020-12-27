@@ -10,11 +10,12 @@ enum Cell {
     C_END
 };
 
-Cell **build_maze(int num_rows, int num_cols);
 void fill_maze();
 void display_maze();
-char get_cell_char(Cell cell);
 void generate_start_position();
+
+Cell **build_maze();
+char get_cell_char(Cell cell);
 
 int num_rows;
 int num_cols;
@@ -25,7 +26,7 @@ int main() {
     srand(time(NULL));
     num_rows = 5;
     num_cols = 5;
-    pptr_maze = build_maze(num_rows, num_cols);
+    pptr_maze = build_maze();
     fill_maze();
     display_maze();
 
@@ -73,7 +74,7 @@ void fill_maze() {
     }
 }
 
-Cell **build_maze(int num_rows, int num_cols) {
+Cell **build_maze() {
     Cell **pptr_maze = new Cell*[num_rows];
     for (int row = 0; row < num_rows; row++) {
         pptr_maze[row] = new Cell[num_cols];
