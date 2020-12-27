@@ -51,7 +51,7 @@ int main() {
     */
     num_rows = 5;
     num_cols = 5;
-    num_moves = num_rows * num_cols / 3;
+    num_moves = (num_rows * num_cols) / 3;
     pptr_maze = build_maze();
 
     fill_maze_with_empty_cells();
@@ -175,6 +175,7 @@ void generate_path() {
                 fill_maze_with_empty_cells();
                 generate_start_position();
                 path_direction = get_random_direction();
+                num_moves = (num_rows * num_cols) / 3;
             }
         }
         calculate_next_position(path_direction);
