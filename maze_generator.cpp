@@ -208,10 +208,10 @@ char get_cell_char(Cell cell) {
             return '#';
             break;
         case C_START:
-            return '@';
+            return 'S';
             break;
         case C_END:
-            return '$';
+            return 'E';
             break;
         default:
             return '!';
