@@ -27,11 +27,12 @@ void display_maze();
 void generate_start_position();
 void generate_path();
 void calculate_next_position(Direction path_direction);
-void blot_position();
+void blot_position(bool set_end_cell);
 
 Direction get_random_direction();
 bool is_valid_direction(Direction path_direction);
 bool is_empty_cell(Direction path_direction);
+bool on_edge_cell();
 Cell **build_maze();
 char get_cell_char(Cell cell);
 
@@ -57,6 +58,14 @@ int main() {
     return 0;
 }
 
+bool on_edge_cell() {
+    if (path_builder.col == 0) return true;
+    else if (path_builder.col == num_cols - 1) return true;
+    else if (path_builder.row == 0) return true;
+    else if (path_builder.row == num_rows - 1) return true;
+    return false;
+}
+
 bool is_empty_cell(Direction path_direction) {
     Cell next_cell = C_EMPTY;
     switch (path_direction) {
@@ -76,8 +85,9 @@ bool is_empty_cell(Direction path_direction) {
     return next_cell == C_EMPTY;
 }
 
-void blot_position() {
-    pptr_maze[path_builder.row][path_builder.col] = C_PATH;
+void blot_position(bool set_end_cell) {
+    Cell cell = set_end_cell ? C_END : C_PATH;
+    pptr_maze[path_builder.row][path_builder.col] = cell;
 }
 
 bool is_valid_direction(Direction path_direction) {
@@ -138,13 +148,19 @@ Direction get_random_direction() {
 
 void generate_path() {
     Direction path_direction;
-    while (num_moves > 0) {
+    /* This should be infinite and break whenever we're done. */
+    bool set_end_cell = false;
+    while (!set_end_cell) {
         path_direction = get_random_direction();
         while (!is_valid_direction(path_direction) || !is_empty_cell(path_direction)) {
+            /* Warning! This could run infinitely if you get stuck on an edge, deal with that... */
             path_direction = get_random_direction();
         }
         calculate_next_position(path_direction);
-        blot_position();
+        if (num_moves < 0 && on_edge_cell()) {
+            set_end_cell = true;
+        }
+        blot_position(set_end_cell);
         num_moves--;
     }
 }
