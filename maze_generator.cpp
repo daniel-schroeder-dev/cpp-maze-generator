@@ -22,7 +22,7 @@ struct PathBuilder {
     int col;
 };
 
-void fill_maze();
+void fill_maze_with_empty_cells();
 void display_maze();
 void generate_start_position();
 void generate_path();
@@ -46,12 +46,15 @@ PathBuilder path_builder;
 
 int main() {
     srand(time(NULL));
+    /*
+    *   These should be passed in at runtime!
+    */
     num_rows = 5;
     num_cols = 5;
     num_moves = num_rows * num_cols / 3;
     pptr_maze = build_maze();
 
-    fill_maze();
+    fill_maze_with_empty_cells();
     generate_start_position();
     generate_path();
     wall_empty_cells();
@@ -166,15 +169,12 @@ void generate_path() {
     while (!set_end_cell) {
         path_direction = get_random_direction();
         while (!is_valid_direction(path_direction) || !is_empty_cell(path_direction)) {
-            /* Warning! This could run infinitely if you get stuck on an edge, deal with that... */
             path_direction = get_random_direction();
             num_invalid_tries++;
             if (num_invalid_tries > 20) {
-                /*
-                *   If we get stuck in a corner, just blot the end position now and be done with it.
-                */
-                blot_position(true);
-                return;
+                fill_maze_with_empty_cells();
+                generate_start_position();
+                path_direction = get_random_direction();
             }
         }
         calculate_next_position(path_direction);
@@ -228,7 +228,7 @@ void display_maze() {
     }
 }
 
-void fill_maze() {
+void fill_maze_with_empty_cells() {
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
             pptr_maze[row][col] = C_EMPTY;
