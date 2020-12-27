@@ -8,6 +8,7 @@ enum Cell {
 
 Cell **build_maze(int num_rows, int num_cols);
 void fill_maze(Cell **pptr_maze);
+void display_maze(Cell **pptr_maze);
 
 int num_rows;
 int num_cols;
@@ -17,9 +18,19 @@ int main() {
     num_cols = 5;
     Cell **pptr_maze = build_maze(num_rows, num_cols);
     fill_maze(pptr_maze);
+    display_maze(pptr_maze);
 
     std::cout << std::endl;
     return 0;
+}
+
+void display_maze(Cell **pptr_maze) {
+    for (int row = 0; row < num_rows; row++) {
+        for (int col = 0; col < num_cols; col++) {
+            std::cout << " | " << pptr_maze[row][col];
+        }
+        std::cout << " | \n";
+    }
 }
 
 void fill_maze(Cell **pptr_maze) {
