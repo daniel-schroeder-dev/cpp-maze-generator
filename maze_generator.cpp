@@ -38,7 +38,7 @@ char get_cell_char(Cell cell);
 
 int num_rows;
 int num_cols;
-int num_moves = 3;
+int num_moves;
 
 Cell **pptr_maze;
 PathBuilder path_builder;
@@ -47,6 +47,7 @@ int main() {
     srand(time(NULL));
     num_rows = 5;
     num_cols = 5;
+    num_moves = num_rows * num_cols / 3;
     pptr_maze = build_maze();
 
     fill_maze();
