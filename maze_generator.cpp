@@ -33,6 +33,7 @@ int num_rows;
 int num_cols;
 
 Cell **pptr_maze;
+PathBuilder path_builder;
 
 int main() {
     srand(time(NULL));
@@ -51,6 +52,8 @@ void generate_start_position() {
     int start_row = rand() % num_rows;
     int start_col = rand() % num_rows;
     pptr_maze[start_row][start_col] = C_START;
+    path_builder.row = start_row;
+    path_builder.col = start_col;
 }
 
 char get_cell_char(Cell cell) {
