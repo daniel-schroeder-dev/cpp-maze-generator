@@ -10,6 +10,18 @@ enum Cell {
     C_END
 };
 
+enum Direction {
+    D_UP,
+    D_DOWN,
+    D_LEFT,
+    D_RIGHT
+};
+
+struct PathBuilder {
+    int row;
+    int col;
+};
+
 void fill_maze();
 void display_maze();
 void generate_start_position();
