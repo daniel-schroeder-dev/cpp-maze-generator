@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 enum Cell {
     C_EMPTY,
@@ -9,19 +11,23 @@ enum Cell {
 };
 
 Cell **build_maze(int num_rows, int num_cols);
-void fill_maze(Cell **pptr_maze);
-void display_maze(Cell **pptr_maze);
+void fill_maze();
+void display_maze();
 char get_cell_char(Cell cell);
+void generate_start_position();
 
 int num_rows;
 int num_cols;
 
+Cell **pptr_maze;
+
 int main() {
+    srand(time(NULL));
     num_rows = 5;
     num_cols = 5;
-    Cell **pptr_maze = build_maze(num_rows, num_cols);
-    fill_maze(pptr_maze);
-    display_maze(pptr_maze);
+    pptr_maze = build_maze(num_rows, num_cols);
+    fill_maze();
+    display_maze();
 
     std::cout << std::endl;
     return 0;
@@ -50,7 +56,7 @@ char get_cell_char(Cell cell) {
     }
 }
 
-void display_maze(Cell **pptr_maze) {
+void display_maze() {
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
             std::cout << " | " << get_cell_char(pptr_maze[row][col]);
@@ -59,7 +65,7 @@ void display_maze(Cell **pptr_maze) {
     }
 }
 
-void fill_maze(Cell **pptr_maze) {
+void fill_maze() {
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
             pptr_maze[row][col] = C_EMPTY;
