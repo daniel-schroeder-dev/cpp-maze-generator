@@ -25,12 +25,15 @@ struct PathBuilder {
 void fill_maze();
 void display_maze();
 void generate_start_position();
+void generate_path();
+Direction get_random_direction();
 
 Cell **build_maze();
 char get_cell_char(Cell cell);
 
 int num_rows;
 int num_cols;
+int num_moves = 3;
 
 Cell **pptr_maze;
 PathBuilder path_builder;
@@ -43,9 +46,37 @@ int main() {
     fill_maze();
     generate_start_position();
     display_maze();
+    generate_path();
 
     std::cout << std::endl;
     return 0;
+}
+
+Direction get_random_direction() {
+    switch (rand() % 4) {
+        case 0:
+            return D_UP;
+            break;
+        case 1:
+            return D_DOWN;
+            break;
+        case 2:
+            return D_LEFT;
+            break;
+        case 3:
+            return D_RIGHT;
+            break;
+        default:
+            return D_UP;
+            break;
+    }
+}
+
+void generate_path() {
+    while (num_moves > 0) {
+        std::cout << get_random_direction();
+        num_moves--;
+    }
 }
 
 void generate_start_position() {
