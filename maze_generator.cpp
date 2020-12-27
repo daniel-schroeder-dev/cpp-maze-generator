@@ -28,10 +28,17 @@ int main() {
     num_cols = 5;
     pptr_maze = build_maze();
     fill_maze();
+    generate_start_position();
     display_maze();
 
     std::cout << std::endl;
     return 0;
+}
+
+void generate_start_position() {
+    int start_row = rand() % num_rows;
+    int start_col = rand() % num_rows;
+    pptr_maze[start_row][start_col] = C_START;
 }
 
 char get_cell_char(Cell cell) {
