@@ -29,6 +29,7 @@ void generate_path();
 void calculate_next_position(Direction path_direction);
 void blot_position(bool set_end_cell);
 void wall_empty_cells();
+void remove_path_cells();
 
 Direction get_random_direction();
 bool is_valid_direction(Direction path_direction);
@@ -59,10 +60,22 @@ int main() {
     generate_start_position();
     generate_path();
     wall_empty_cells();
+    remove_path_cells();
     display_maze();
 
     std::cout << std::endl;
     return 0;
+}
+
+
+void remove_path_cells() {
+    for (int row = 0; row < num_rows; row++) {
+        for (int col = 0; col < num_cols; col++) {
+            if (pptr_maze[row][col] == C_PATH) {
+                pptr_maze[row][col] = C_EMPTY;
+            }
+        }
+    }
 }
 
 void wall_empty_cells() {
