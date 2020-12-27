@@ -46,11 +46,12 @@ PathBuilder path_builder;
 
 int main() {
     srand(time(NULL));
-    /*
-    *   These should be passed in at runtime!
-    */
-    num_rows = 5;
-    num_cols = 5;
+    
+    std::cout << "Enter the height of the maze: ";
+    std::cin >> num_rows;
+    std::cout << "Enter the width of the maze: ";
+    std::cin >> num_cols;
+
     num_moves = (num_rows * num_cols) / 3;
     pptr_maze = build_maze();
 
@@ -67,7 +68,7 @@ int main() {
 void wall_empty_cells() {
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
-            if (pptr_maze[row][col] == C_EMPTY) {
+            if (pptr_maze[row][col] == C_EMPTY && rand() % 2) {
                 pptr_maze[row][col] = C_BLOCKED;
             }
         }
