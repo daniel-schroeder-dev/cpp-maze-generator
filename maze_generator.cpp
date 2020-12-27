@@ -27,6 +27,8 @@ void display_maze();
 void generate_start_position();
 void generate_path();
 Direction get_random_direction();
+bool is_valid_direction(Direction path_direction);
+void calculate_next_position(Direction path_direction);
 
 Cell **build_maze();
 char get_cell_char(Cell cell);
@@ -52,6 +54,42 @@ int main() {
     return 0;
 }
 
+bool is_valid_direction(Direction path_direction) {
+    switch (path_direction) {
+        case D_UP:
+            return path_builder.row - 1 >= 0;
+            break;
+        case D_DOWN:
+            return path_builder.row + 1 < num_rows;
+            break;
+        case D_LEFT:
+            return path_builder.col - 1 >= 0;
+            break;
+        case D_RIGHT:
+            return path_builder.col + 1 < num_cols;
+            break;
+        default:
+            return false;
+    }
+}
+
+void calculate_next_position(Direction path_direction) {
+    switch (path_direction) {
+        case D_UP:
+            path_builder.row -= 1;
+            break;
+        case D_DOWN:
+            path_builder.row += 1;
+            break;
+        case D_LEFT:
+            path_builder.col -= 1;
+            break;
+        case D_RIGHT:
+            path_builder.col += 1;
+            break;
+    }
+}
+
 Direction get_random_direction() {
     switch (rand() % 4) {
         case 0:
@@ -73,8 +111,13 @@ Direction get_random_direction() {
 }
 
 void generate_path() {
+    Direction path_direction;
     while (num_moves > 0) {
-        std::cout << get_random_direction();
+        path_direction = get_random_direction();
+        while (!is_valid_direction(path_direction)) {
+            path_direction = get_random_direction();
+        }
+        calculate_next_position(path_direction);
         num_moves--;
     }
 }
