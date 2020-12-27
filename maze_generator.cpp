@@ -48,9 +48,9 @@ int main() {
     num_rows = 5;
     num_cols = 5;
     pptr_maze = build_maze();
+
     fill_maze();
     generate_start_position();
-    display_maze();
     generate_path();
     display_maze();
 
@@ -148,13 +148,21 @@ Direction get_random_direction() {
 
 void generate_path() {
     Direction path_direction;
-    /* This should be infinite and break whenever we're done. */
     bool set_end_cell = false;
+    int num_invalid_tries = 0;
     while (!set_end_cell) {
         path_direction = get_random_direction();
         while (!is_valid_direction(path_direction) || !is_empty_cell(path_direction)) {
             /* Warning! This could run infinitely if you get stuck on an edge, deal with that... */
             path_direction = get_random_direction();
+            num_invalid_tries++;
+            if (num_invalid_tries > 20) {
+                /*
+                *   If we get stuck in a corner, just blot the end position now and be done with it.
+                */
+                blot_position(true);
+                return;
+            }
         }
         calculate_next_position(path_direction);
         if (num_moves < 0 && on_edge_cell()) {
@@ -162,6 +170,7 @@ void generate_path() {
         }
         blot_position(set_end_cell);
         num_moves--;
+        num_invalid_tries = 0;
     }
 }
 
