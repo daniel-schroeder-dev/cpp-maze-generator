@@ -31,6 +31,7 @@ void blot_position();
 
 Direction get_random_direction();
 bool is_valid_direction(Direction path_direction);
+bool is_empty_cell(Direction path_direction);
 Cell **build_maze();
 char get_cell_char(Cell cell);
 
@@ -54,6 +55,25 @@ int main() {
 
     std::cout << std::endl;
     return 0;
+}
+
+bool is_empty_cell(Direction path_direction) {
+    Cell next_cell = C_EMPTY;
+    switch (path_direction) {
+        case D_UP:
+            next_cell = pptr_maze[path_builder.row-1][path_builder.col];
+            break;
+        case D_DOWN:
+            next_cell = pptr_maze[path_builder.row+1][path_builder.col];
+            break;
+        case D_LEFT:
+            next_cell = pptr_maze[path_builder.row][path_builder.col-1];
+            break;
+        case D_RIGHT:
+            next_cell = pptr_maze[path_builder.row][path_builder.col+1];
+            break;
+    }
+    return next_cell == C_EMPTY;
 }
 
 void blot_position() {
@@ -120,7 +140,7 @@ void generate_path() {
     Direction path_direction;
     while (num_moves > 0) {
         path_direction = get_random_direction();
-        while (!is_valid_direction(path_direction)) {
+        while (!is_valid_direction(path_direction) || !is_empty_cell(path_direction)) {
             path_direction = get_random_direction();
         }
         calculate_next_position(path_direction);
