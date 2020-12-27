@@ -26,10 +26,11 @@ void fill_maze();
 void display_maze();
 void generate_start_position();
 void generate_path();
+void calculate_next_position(Direction path_direction);
+void blot_position();
+
 Direction get_random_direction();
 bool is_valid_direction(Direction path_direction);
-void calculate_next_position(Direction path_direction);
-
 Cell **build_maze();
 char get_cell_char(Cell cell);
 
@@ -49,9 +50,14 @@ int main() {
     generate_start_position();
     display_maze();
     generate_path();
+    display_maze();
 
     std::cout << std::endl;
     return 0;
+}
+
+void blot_position() {
+    pptr_maze[path_builder.row][path_builder.col] = C_PATH;
 }
 
 bool is_valid_direction(Direction path_direction) {
@@ -118,6 +124,7 @@ void generate_path() {
             path_direction = get_random_direction();
         }
         calculate_next_position(path_direction);
+        blot_position();
         num_moves--;
     }
 }
@@ -154,6 +161,7 @@ char get_cell_char(Cell cell) {
 }
 
 void display_maze() {
+    std::cout << "\n\n";
     for (int row = 0; row < num_rows; row++) {
         for (int col = 0; col < num_cols; col++) {
             std::cout << " | " << get_cell_char(pptr_maze[row][col]);
